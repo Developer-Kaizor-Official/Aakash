@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Yearly Quest</title>
-  <!-- Animate.css for cool entrance/exit animations -->
+  <!-- Animate.css for entrance/exit animations -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
   <style>
     /* === GLOBAL & BACKGROUND === */
@@ -121,9 +121,19 @@
       transform: scale(1.2);
     }
 
+    .quest-card label,
+    .quest-card textarea,
+    .quest-card input,
+    .quest-card select {
+      font-size: 0.9rem;
+      color: #e0e0e0;
+      outline: none;
+      transition: all 0.2s ease;
+      box-sizing: border-box;
+    }
+
     .quest-card label {
       display: block;
-      font-size: 0.9rem;
       margin-top: 15px;
       margin-bottom: 5px;
       color: #c0d8ff;
@@ -139,11 +149,6 @@
       border: 1px solid #00f5fe;
       border-radius: 5px;
       background: rgba(0, 0, 0, 0.6);
-      color: #e0e0e0;
-      font-size: 0.9rem;
-      outline: none;
-      transition: all 0.2s ease;
-      box-sizing: border-box;
     }
 
     .quest-card input:focus,
@@ -183,15 +188,18 @@
       margin-top: 15px;
     }
 
+    /* Make each wrapper a <label> so clicking anywhere inside forwards to the <input> */
     .quest-card .img-wrapper {
+      display: block;
       position: relative;
-      width: 48vw;    /* roughly half the viewport width */
-      min-height: 200px; /* KEY FIX: give it a solid click‐area before image loads */
+      width: 48vw;           /* roughly half the viewport width */
+      min-height: 200px;     /* fixed height ensures a tappable area on mobile */
       background: #000;
       border: 1px solid #00f5fe;
       border-radius: 5px;
       overflow: hidden;
       box-shadow: 0 0 8px rgba(0, 245, 254, 0.5);
+      cursor: pointer;       /* label is clickable */
     }
 
     /* Hide the <img> until we explicitly show it */
@@ -206,7 +214,7 @@
       display: block;
     }
 
-    /* File input now covers the entire wrapper, invisible but clickable */
+    /* File input covers entire label (clickable everywhere). Invisible but clickable. */
     .quest-card .img-wrapper input[type="file"] {
       position: absolute;
       top: 0;
@@ -234,6 +242,14 @@
 
     .quest-card::-webkit-scrollbar-thumb:hover {
       background: #00c7ff;
+    }
+
+    /* On very small screens, shrink wrappers to fit two-per-row if needed */
+    @media (max-width: 600px) {
+      .quest-card .img-wrapper {
+        width: 100%;
+        min-height: 150px;
+      }
     }
   </style>
 </head>
@@ -307,10 +323,7 @@
       card.appendChild(removeBtn);
 
       // — Quest Title
-      const titleLabel = document.createElement('label');
-      titleLabel.textContent = 'Quest Title:';
-      card.appendChild(titleLabel);
-
+      card.appendChild(document.createElement('label')).textContent = 'Quest Title:';
       const titleInput = document.createElement('input');
       titleInput.type = 'text';
       titleInput.className = 'title-input';
@@ -320,10 +333,7 @@
       card.appendChild(titleInput);
 
       // — Status
-      const statusLabel = document.createElement('label');
-      statusLabel.textContent = 'Status:';
-      card.appendChild(statusLabel);
-
+      card.appendChild(document.createElement('label')).textContent = 'Status:';
       const statusSelect = document.createElement('select');
       statusSelect.className = 'status-select';
       ['not started', 'in progress', 'completed'].forEach(opt => {
@@ -337,10 +347,7 @@
       card.appendChild(statusSelect);
 
       // — Due Date
-      const dueLabel = document.createElement('label');
-      dueLabel.textContent = 'Due Date:';
-      card.appendChild(dueLabel);
-
+      card.appendChild(document.createElement('label')).textContent = 'Due Date:';
       const dueInput = document.createElement('input');
       dueInput.type = 'date';
       dueInput.className = 'due-input';
@@ -349,10 +356,7 @@
       card.appendChild(dueInput);
 
       // — Description
-      const descLabel = document.createElement('label');
-      descLabel.textContent = 'Description:';
-      card.appendChild(descLabel);
-
+      card.appendChild(document.createElement('label')).textContent = 'Description:';
       const descInput = document.createElement('textarea');
       descInput.className = 'desc-input';
       descInput.placeholder = 'Detailed quest description...';
@@ -363,11 +367,8 @@
       // — XP & Reward
       const xpRewardWrapper = document.createElement('div');
       xpRewardWrapper.className = 'xp-rewards';
-
       const xpWrapper = document.createElement('div');
-      const xpLabel = document.createElement('label');
-      xpLabel.textContent = 'XP:';
-      xpWrapper.appendChild(xpLabel);
+      xpWrapper.appendChild(document.createElement('label')).textContent = 'XP:';
       const xpInput = document.createElement('input');
       xpInput.type = 'number';
       xpInput.className = 'xp-input';
@@ -378,9 +379,7 @@
       xpWrapper.appendChild(xpInput);
 
       const rewardWrapper = document.createElement('div');
-      const rewardLabel = document.createElement('label');
-      rewardLabel.textContent = 'Reward:';
-      rewardWrapper.appendChild(rewardLabel);
+      rewardWrapper.appendChild(document.createElement('label')).textContent = 'Reward:';
       const rewardInput = document.createElement('input');
       rewardInput.type = 'text';
       rewardInput.className = 'reward-input';
@@ -394,16 +393,18 @@
       card.appendChild(xpRewardWrapper);
 
       // — Images Section
-      const imagesLabel = document.createElement('label');
-      imagesLabel.textContent = 'Images:';
-      card.appendChild(imagesLabel);
-
+      card.appendChild(document.createElement('label')).textContent = 'Images:';
       const imgContainer = document.createElement('div');
       imgContainer.className = 'img-container';
 
-      // • Motivational Image Wrapper
-      const motWrapper = document.createElement('div');
+      // • Motivational Image Wrapper (using <label> for full-area tap)
+      const motWrapper = document.createElement('label');
       motWrapper.className = 'img-wrapper';
+
+      const motInput = document.createElement('input');
+      motInput.type = 'file';
+      motInput.accept = 'image/*';
+      motInput.addEventListener('change', () => handleImageUpload(motInput, motPreview));
 
       const motPreview = document.createElement('img');
       motPreview.className = 'mot-img-preview';
@@ -413,19 +414,18 @@
       }
       motPreview.setAttribute('data-src', imgMot);
 
-      const motInput = document.createElement('input');
-      motInput.type = 'file';
-      motInput.accept = 'image/*';
-      motInput.addEventListener('change', () => handleImageUpload(motInput, motPreview));
-
-      // Input sits on top, img below
       motWrapper.appendChild(motInput);
       motWrapper.appendChild(motPreview);
       imgContainer.appendChild(motWrapper);
 
-      // • User Image Wrapper
-      const userWrapper = document.createElement('div');
+      // • User Image Wrapper (using <label> for full-area tap)
+      const userWrapper = document.createElement('label');
       userWrapper.className = 'img-wrapper';
+
+      const userInput = document.createElement('input');
+      userInput.type = 'file';
+      userInput.accept = 'image/*';
+      userInput.addEventListener('change', () => handleImageUpload(userInput, userPreview));
 
       const userPreview = document.createElement('img');
       userPreview.className = 'user-img-preview';
@@ -434,11 +434,6 @@
         userPreview.classList.add('visible');
       }
       userPreview.setAttribute('data-src', imgUser);
-
-      const userInput = document.createElement('input');
-      userInput.type = 'file';
-      userInput.accept = 'image/*';
-      userInput.addEventListener('change', () => handleImageUpload(userInput, userPreview));
 
       userWrapper.appendChild(userInput);
       userWrapper.appendChild(userPreview);

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>This is your dungeon, work hard to become Shadow monarch</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Custom “manhwa-style” font -->
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-dark: #0a0a0f;
+      --bg-accent: #1a0022;
+      --glow-purple: #9a00ff;
+      --text-light: #e0e0e0;
+      --card-bg: #1c1c29;
+      --card-glow: rgba(154, 0, 255, 0.5);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Press Start 2P', monospace;
+      color: var(--text-light);
+    }
+
+    body {
+      background: linear-gradient(135deg, var(--bg-dark), var(--bg-accent));
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    header {
+      text-align: center;
+      padding: 1rem;
+      font-size: 1.4rem;
+      text-shadow: 0 0 8px var(--glow-purple);
+    }
+
+    #container {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      padding: 1rem;
+    }
+
+    .panel {
+      background: var(--card-bg);
+      border-radius: 12px;
+      box-shadow: 0 0 12px var(--card-glow);
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .panel h2 {
+      margin-bottom: 0.5rem;
+      font-size: 1.1rem;
+      border-bottom: 1px solid var(--glow-purple);
+      padding-bottom: 0.5rem;
+    }
+
+    .search {
+      margin-bottom: 0.5rem;
+      padding: 0.4rem;
+      background: #111;
+      border: 1px solid var(--glow-purple);
+      color: var(--text-light);
+      border-radius: 6px;
+    }
+
+    .cards {
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    .card {
+      background: #111;
+      border: 1px solid var(--glow-purple);
+      border-radius: 8px;
+      padding: 0.8rem;
+      margin-bottom: 0.8rem;
+      box-shadow: 0 0 6px var(--card-glow);
+      transition: transform 0.2s;
+    }
+
+    .card:hover {
+      transform: scale(1.02);
+    }
+
+    .meta {
+      font-size: 0.7rem;
+      margin-bottom: 0.4rem;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .tags {
+      font-size: 0.75rem;
+      margin: 0.4rem 0;
+    }
+
+    .tags span {
+      background: var(--bg-accent);
+      padding: 0.2rem 0.4rem;
+      margin-right: 0.3rem;
+      border-radius: 4px;
+      font-size: 0.7rem;
+    }
+
+    .rank-control {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+
+    .rank-control button {
+      background: var(--glow-purple);
+      border: none;
+      padding: 0.3rem 0.6rem;
+      cursor: pointer;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      box-shadow: 0 0 6px var(--glow-purple);
+    }
+
+    .progress {
+      width: 100%;
+      background: #222;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-top: 0.5rem;
+    }
+
+    .progress-bar {
+      height: 6px;
+      width: 0;
+      transition: width 0.4s ease;
+      background: var(--glow-purple);
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>This is your dungeon, work hard to become Shadow monarch</header>
+
+  <div id="container">
+    <!-- Journals Panel -->
+    <div class="panel" id="journal-panel">
+      <h2>Journals</h2>
+      <input type="text" class="search" id="journal-search" placeholder="Search Journals..." />
+      <div class="cards" id="journal-cards">
+        <!-- Example Card -->
+         
+        <div class="card" data-title="first-journey">
+          <div class="meta">
+            <span>#1</span>
+            <span>06/27/2025</span>
+          </div>
+          <div class="content"><strong>First Dungeon Run</strong></div>
+          <div class="tags"><span>dungeon</span><span>xp</span></div>
+          <div class="rank-control">
+            <button onclick="changeRank(this, -1)">−</button>
+            <span class="rank">10</span>/100
+            <button onclick="changeRank(this, 1)">+</button>
+          </div>
+          <div class="progress"><div class="progress-bar" style="width:10%"></div></div>
+        </div>
+      
+      </div>
+    </div>
+
+    <!-- Research Panel -->
+    <div class="panel" id="research-panel">
+      <h2>Research</h2>
+      <input type="text" class="search" id="research-search" placeholder="Search Research..." />
+      <div class="cards" id="research-cards">
+        <!-- Example Card -->
+
+        <div class="card" data-title="monster-analysis">
+          <div class="meta">
+            <span>#1</span>
+            <span>06/27/2025</span>
+          </div>
+          <div class="content"><strong>Monster Analysis</strong></div>
+          <div class="tags"><span>creature</span><span>tactics</span></div>
+          <div class="rank-control">
+            <button onclick="changeRank(this, -1)">−</button>
+            <span class="rank">25</span>/100
+            <button onclick="changeRank(this, 1)">+</button>
+          </div>
+          <div class="progress"><div class="progress-bar" style="width:25%"></div></div>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function changeRank(btn, delta) {
+      const rankEl = btn.parentElement.querySelector('.rank');
+      let rank = parseInt(rankEl.textContent);
+      rank = Math.min(100, Math.max(1, rank + delta));
+      rankEl.textContent = rank;
+      const bar = btn.parentElement.nextElementSibling.firstElementChild;
+      bar.style.width = rank + '%';
+    }
+
+    function filter(type, query) {
+      query = query.toLowerCase();
+      document.querySelectorAll(`#${type}-cards .card`).forEach(card => {
+        card.style.display = card.dataset.title.includes(query) ? '' : 'none';
+      });
+    }
+
+    document.getElementById('journal-search')
+      .addEventListener('input', e => filter('journal', e.target.value));
+    document.getElementById('research-search')
+      .addEventListener('input', e => filter('research', e.target.value));
+  </script>
+
+</body>
+
+</html>

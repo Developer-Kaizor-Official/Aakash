@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Infinite Imagination</title>
+
+  <!-- Futuristic font from Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Orbitron:400,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+  <style>
+    /* Root Variables for consistency */
+    :root {
+      --neon-blue: #00ffff;
+      --deep-purple: #1d0b2a;
+      --black: #000;
+    }
+
+    /* Global Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body,
+    html {
+      height: 100%;
+      font-family: 'Orbitron', sans-serif;
+      overflow-x: hidden;
+      /* A radial gradient background for depth */
+      background: radial-gradient(circle at center, var(--deep-purple), var(--black));
+      color: #F0F0F0;
+    }
+
+    /* Canvas for Particle Background */
+    #canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+
+    /* Hero Section */
+    .hero {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero h1 {
+      font-size: 4rem;
+      color: #fff;
+      text-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue), 0 0 30px var(--neon-blue);
+      animation: neonFlicker 1.5s infinite alternate;
+    }
+
+    @keyframes neonFlicker {
+      0% {
+        text-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue), 0 0 30px var(--neon-blue);
+        opacity: 0.8;
+      }
+
+      50% {
+        text-shadow: 0 0 20px var(--neon-blue), 0 0 30px var(--neon-blue), 0 0 40px var(--neon-blue);
+        opacity: 1;
+      }
+
+      100% {
+        text-shadow: 0 0 15px var(--neon-blue), 0 0 25px var(--neon-blue), 0 0 35px var(--neon-blue);
+        opacity: 0.9;
+      }
+    }
+
+    .scroll-down {
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 2.5rem;
+      color: var(--neon-blue);
+      cursor: pointer;
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+      0%,
+      20%,
+      50%,
+      80%,
+      100% {
+        transform: translate(-50%, 0);
+      }
+
+      40% {
+        transform: translate(-50%, -10px);
+      }
+
+      60% {
+        transform: translate(-50%, -5px);
+      }
+    }
+
+    /* Cards Section */
+    .cards-section {
+      padding: 60px 20px;
+      background: linear-gradient(135deg, rgba(29, 11, 42, 0.8) 0%, rgba(0, 0, 0, 0.9) 100%);
+    }
+
+    .cards-container {
+      max-width: 1200px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+      padding: 40px;
+      border: 2px solid var(--neon-blue);
+      border-radius: 20px;
+      background: rgba(0, 0, 0, 0.3);
+    }
+
+    .card {
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid var(--neon-blue);
+      border-radius: 15px;
+      padding: 20px;
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      opacity: 0;
+      transform: translateY(20px);
+      cursor: pointer;
+    }
+
+    .card.visible {
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+
+    .card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 15px var(--neon-blue);
+    }
+
+    .card h3 {
+      margin: 10px 0;
+      font-size: 1.8rem;
+      color: var(--neon-blue);
+      text-shadow: 0 0 8px var(--neon-blue);
+    }
+
+    .card p {
+      font-size: 1rem;
+      color: #ccc;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+      /* Keeps the text color consistent */
+    }
+
+    .card h3 a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* Back-to-Top Button */
+    .back-to-top {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      font-size: 2.2rem;
+      color: var(--neon-blue);
+      cursor: pointer;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: 10;
+      user-select: none;
+    }
+
+    .back-to-top.visible {
+      opacity: 1;
+    }
+
+    /* ===== AUDIO CONTAINER STYLES (Optional) ===== */
+    /* You can override these in a global CSS or keep them page-specific. */
+    #customAudioPlayer {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 9999;
+    }
+
+    #playPauseBtn {
+      background-color: var(--neon-blue);
+      border: none;
+      padding: 10px 15px;
+      font-size: 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
+      color: var(--black);
+    }
+  </style>
+</head>
+
+<body>
+  <!-- ======================
+       AUDIO INJECTION POINT
+       ====================== -->
+  <div id="audioContainer"></div>
+  <script src="audio.js"></script>
+  <!-- From here on, you keep the rest of your content unchanged -->
+
+  <!-- Particle Background Canvas -->
+  <canvas id="canvas"></canvas>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <h1>Welcome Player</h1>
+    <div class="scroll-down" onclick="document.getElementById('cards').scrollIntoView({ behavior: 'smooth' })">
+      &#x2193;
+    </div>
+  </section>
+
+  <!-- Cards Section -->
+  <section class="cards-section" id="cards">
+    <div class="cards-container">
+      <div class="card" onclick="window.location.href='Super Saiyan.html';">
+        <h3>Super Saiyan</h3>
+        <p>A Saiyan has no Limits</p>
+      </div>
+      <div class="card" onclick="window.location.href='Solo leveling.html';">
+        <h3>Solo Leveling</h3>
+        <p>I will become stronger level by level</p>
+      </div>
+      <div class="card">
+        <a href="dungeon.html">
+          <h3>My Dungeon</h3>
+          <p>I’m gonna still be Bloody Marry</p>
+        </a>
+      </div>
+      <div class="card">
+        <a href="mission.html">
+          <h3>My Missions</h3>
+          <p>Witness the journey of the weakest hunter & low-class Saiyan</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Back-to-Top Button -->
+  <div class="back-to-top" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })">&#8679;</div>
+
+  <script>
+    /* --- Particle Background with Connecting Lines --- */
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    let particles = [];
+    const particleCount = 150;
+    const maxDistance = 120;
+
+    function initParticles() {
+      particles = [];
+      for (let i = 0; i < particleCount; i++) {
+        particles.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          r: Math.random() * 2 + 1,
+          dx: (Math.random() - 0.5) * 0.8,
+          dy: (Math.random() - 0.5) * 0.8
+        });
+      }
+    }
+    initParticles();
+
+    function animateParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let i = 0; i < particles.length; i++) {
+        let p = particles[i];
+        p.x += p.dx;
+        p.y += p.dy;
+
+        if (p.x < 0) p.x = canvas.width;
+        if (p.x > canvas.width) p.x = 0;
+        if (p.y < 0) p.y = canvas.height;
+        if (p.y > canvas.height) p.y = 0;
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(0, 255, 255, 0.8)";
+        ctx.fill();
+      }
+
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          let dx = particles[i].x - particles[j].x;
+          let dy = particles[i].y - particles[j].y;
+          let distance = Math.sqrt(dx * dx + dy * dy);
+          if (distance < maxDistance) {
+            ctx.beginPath();
+            ctx.strokeStyle = `rgba(0, 255, 255, ${1 - distance / maxDistance})`;
+            ctx.lineWidth = 1;
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+
+      requestAnimationFrame(animateParticles);
+    }
+    animateParticles();
+
+    /* --- Intersection Observer for Card Fade-In --- */
+    const cards = document.querySelectorAll('.card');
+    const cardObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.2 });
+    cards.forEach(card => cardObserver.observe(card));
+
+    // --- Back-to-Top Button Visibility ---
+    const backToTopButton = document.querySelector('.back-to-top');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > window.innerHeight * 0.5) {
+        backToTopButton.classList.add('visible');
+      } else {
+        backToTopButton.classList.remove('visible');
+      }
+    });
+  </script>
+</body>
+
+</html>

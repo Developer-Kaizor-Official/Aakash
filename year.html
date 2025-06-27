@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Yearly Quest</title>
+  <!-- Animate.css for entrance/exit animations -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <style>
+    /* === GLOBAL & BACKGROUND === */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: radial-gradient(circle at center, #0a0f27 0%, #03060f 100%);
+      overflow-x: hidden;
+      color: #e0e0e0;
+    }
+
+    /* Neon grid overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background:
+        linear-gradient(transparent 95%, rgba(0, 150, 255, 0.1) 95%),
+        linear-gradient(90deg, transparent 95%, rgba(0, 150, 255, 0.1) 95%);
+      background-size: 50px 50px;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* Glowing header */
+    header {
+      text-align: center;
+      padding: 20px 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    header h1 {
+      font-size: 2.5rem;
+      letter-spacing: 3px;
+      text-shadow: 0 0 10px #00f5fe, 0 0 20px #00f5fe, 0 0 30px #00f5fe;
+      margin: 0;
+      color: #00f5fe;
+    }
+
+    /* === CONTROLS & BUTTONS === */
+    .controls {
+      text-align: center;
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .controls button {
+      background: rgba(0, 245, 254, 0.2);
+      border: 2px solid #00f5fe;
+      color: #00f5fe;
+      font-size: 1rem;
+      padding: 10px 20px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
+      text-shadow: 0 0 5px #00f5fe;
+    }
+
+    .controls button:hover {
+      background: rgba(0, 245, 254, 0.4);
+      box-shadow: 0 0 10px #00f5fe, 0 0 20px #00f5fe;
+      transform: scale(1.05);
+    }
+
+    /* === QUEST CARD STYLES === */
+    #quest-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      padding-bottom: 40px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .quest-card {
+      background: rgba(10, 20, 40, 0.7);
+      border: 2px solid #00f5fe;
+      border-radius: 15px;
+      width: 100vw;
+      min-height: 100vh;
+      padding: 20px;
+      box-sizing: border-box;
+      box-shadow: 0 0 10px rgba(0, 245, 254, 0.4);
+      position: relative;
+      overflow-y: auto;
+    }
+
+    .quest-card:hover {
+      box-shadow: 0 0 15px rgba(0, 245, 254, 0.7), 0 0 30px rgba(0, 245, 254, 0.5);
+    }
+
+    .quest-card .remove-btn {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: transparent;
+      border: none;
+      font-size: 1.2rem;
+      color: #ff4f4f;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+      z-index: 2;
+    }
+
+    .quest-card .remove-btn:hover {
+      transform: scale(1.2);
+    }
+
+    .quest-card label,
+    .quest-card textarea,
+    .quest-card input,
+    .quest-card select {
+      font-size: 0.9rem;
+      color: #e0e0e0;
+      outline: none;
+      transition: all 0.2s ease;
+      box-sizing: border-box;
+    }
+
+    .quest-card label {
+      display: block;
+      margin-top: 15px;
+      margin-bottom: 5px;
+      color: #c0d8ff;
+    }
+
+    .quest-card input[type="text"],
+    .quest-card input[type="date"],
+    .quest-card input[type="number"],
+    .quest-card textarea,
+    .quest-card select {
+      width: 100%;
+      padding: 7px;
+      border: 1px solid #00f5fe;
+      border-radius: 5px;
+      background: rgba(0, 0, 0, 0.6);
+    }
+
+    .quest-card input:focus,
+    .quest-card textarea:focus,
+    .quest-card select:focus {
+      border-color: #00f5fe;
+      box-shadow: 0 0 8px #00f5fe;
+    }
+
+    .quest-card textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .quest-card .status-select {
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      background: rgba(0, 0, 0, 0.8);
+      color: #00f5fe;
+    }
+
+    .quest-card .xp-rewards {
+      display: flex;
+      gap: 10px;
+    }
+
+    .quest-card .xp-rewards input {
+      flex: 1;
+    }
+
+    /* === IMAGE CONTAINERS: HALF WIDTH, AUTO HEIGHT === */
+    .quest-card .img-container {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    /* Make each wrapper a <label> so clicking anywhere inside forwards to the <input> */
+    .quest-card .img-wrapper {
+      display: block;
+      position: relative;
+      width: 48vw;           /* roughly half the viewport width */
+      min-height: 200px;     /* fixed height ensures a tappable area on mobile */
+      background: #000;
+      border: 1px solid #00f5fe;
+      border-radius: 5px;
+      overflow: hidden;
+      box-shadow: 0 0 8px rgba(0, 245, 254, 0.5);
+      cursor: pointer;       /* label is clickable */
+    }
+
+    /* Hide the <img> until we explicitly show it */
+    .quest-card .img-wrapper img {
+      width: 100%;
+      height: auto;
+      display: none;
+      object-fit: contain;
+    }
+
+    .quest-card .img-wrapper img.visible {
+      display: block;
+    }
+
+    /* File input covers entire label (clickable everywhere). Invisible but clickable. */
+    .quest-card .img-wrapper input[type="file"] {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      cursor: pointer;
+      z-index: 2;
+    }
+
+    /* Scrollbar customization inside each quest-card */
+    .quest-card::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    .quest-card::-webkit-scrollbar-track {
+      background: #0a0f27;
+    }
+
+    .quest-card::-webkit-scrollbar-thumb {
+      background: #00f5fe;
+      border-radius: 5px;
+    }
+
+    .quest-card::-webkit-scrollbar-thumb:hover {
+      background: #00c7ff;
+    }
+
+    /* On very small screens, shrink wrappers to fit two-per-row if needed */
+    @media (max-width: 600px) {
+      .quest-card .img-wrapper {
+        width: 100%;
+        min-height: 150px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>Yearly Quest <span style="font-size:0.7rem;color:#a0cfff;"></span></h1>
+  </header>
+  <div id="audioContainer"></div>
+  <div class="controls">
+    <button id="add-quest-btn">➕ Add New Quest</button>
+  </div>
+  <div id="quest-container"></div>
+
+  <script>
+    const STORAGE_KEY = 'yearlyQuestsSoloLeveling';
+    let questIdCounter = Date.now();
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        try {
+          const quests = JSON.parse(saved);
+          quests.forEach(q => createQuestCard(q));
+        } catch (e) {
+          console.error('Failed to parse saved quests:', e);
+        }
+      }
+    });
+
+    function saveAllQuests() {
+      const cards = document.querySelectorAll('.quest-card');
+      const dataToSave = [];
+      cards.forEach(card => {
+        const id = card.getAttribute('data-id');
+        const title = card.querySelector('.title-input').value.trim();
+        const status = card.querySelector('.status-select').value;
+        const dueDate = card.querySelector('.due-input').value;
+        const desc = card.querySelector('.desc-input').value.trim();
+        const xp = card.querySelector('.xp-input').value;
+        const reward = card.querySelector('.reward-input').value.trim();
+        const imgMot = card.querySelector('.mot-img-preview').getAttribute('data-src') || '';
+        const imgUser = card.querySelector('.user-img-preview').getAttribute('data-src') || '';
+        dataToSave.push({ id, title, status, dueDate, desc, xp, reward, imgMot, imgUser });
+      });
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(dataToSave));
+    }
+
+    function createQuestCard(data = {}) {
+      const {
+        id = (questIdCounter++).toString(),
+        title = '',
+        status = 'not started',
+        dueDate = '',
+        desc = '',
+        xp = '',
+        reward = '',
+        imgMot = '',
+        imgUser = ''
+      } = data;
+
+      const card = document.createElement('div');
+      card.classList.add('quest-card', 'animate__animated', 'animate__zoomIn');
+      card.setAttribute('data-id', id);
+
+      // — Remove button
+      const removeBtn = document.createElement('button');
+      removeBtn.className = 'remove-btn';
+      removeBtn.innerHTML = '✖';
+      removeBtn.addEventListener('click', () => removeQuestCard(card));
+      card.appendChild(removeBtn);
+
+      // — Quest Title
+      card.appendChild(document.createElement('label')).textContent = 'Quest Title:';
+      const titleInput = document.createElement('input');
+      titleInput.type = 'text';
+      titleInput.className = 'title-input';
+      titleInput.placeholder = 'Enter quest name';
+      titleInput.value = title;
+      titleInput.addEventListener('input', saveAllQuests);
+      card.appendChild(titleInput);
+
+      // — Status
+      card.appendChild(document.createElement('label')).textContent = 'Status:';
+      const statusSelect = document.createElement('select');
+      statusSelect.className = 'status-select';
+      ['not started', 'in progress', 'completed'].forEach(opt => {
+        const o = document.createElement('option');
+        o.value = opt;
+        o.textContent = opt.charAt(0).toUpperCase() + opt.slice(1);
+        if (opt === status) o.selected = true;
+        statusSelect.appendChild(o);
+      });
+      statusSelect.addEventListener('change', saveAllQuests);
+      card.appendChild(statusSelect);
+
+      // — Due Date
+      card.appendChild(document.createElement('label')).textContent = 'Due Date:';
+      const dueInput = document.createElement('input');
+      dueInput.type = 'date';
+      dueInput.className = 'due-input';
+      dueInput.value = dueDate;
+      dueInput.addEventListener('change', saveAllQuests);
+      card.appendChild(dueInput);
+
+      // — Description
+      card.appendChild(document.createElement('label')).textContent = 'Description:';
+      const descInput = document.createElement('textarea');
+      descInput.className = 'desc-input';
+      descInput.placeholder = 'Detailed quest description...';
+      descInput.value = desc;
+      descInput.addEventListener('input', saveAllQuests);
+      card.appendChild(descInput);
+
+      // — XP & Reward
+      const xpRewardWrapper = document.createElement('div');
+      xpRewardWrapper.className = 'xp-rewards';
+      const xpWrapper = document.createElement('div');
+      xpWrapper.appendChild(document.createElement('label')).textContent = 'XP:';
+      const xpInput = document.createElement('input');
+      xpInput.type = 'number';
+      xpInput.className = 'xp-input';
+      xpInput.placeholder = '0';
+      xpInput.min = '0';
+      xpInput.value = xp;
+      xpInput.addEventListener('input', saveAllQuests);
+      xpWrapper.appendChild(xpInput);
+
+      const rewardWrapper = document.createElement('div');
+      rewardWrapper.appendChild(document.createElement('label')).textContent = 'Reward:';
+      const rewardInput = document.createElement('input');
+      rewardInput.type = 'text';
+      rewardInput.className = 'reward-input';
+      rewardInput.placeholder = 'e.g., 100 coins';
+      rewardInput.value = reward;
+      rewardInput.addEventListener('input', saveAllQuests);
+      rewardWrapper.appendChild(rewardInput);
+
+      xpRewardWrapper.appendChild(xpWrapper);
+      xpRewardWrapper.appendChild(rewardWrapper);
+      card.appendChild(xpRewardWrapper);
+
+      // — Images Section
+      card.appendChild(document.createElement('label')).textContent = 'Images:';
+      const imgContainer = document.createElement('div');
+      imgContainer.className = 'img-container';
+
+      // • Motivational Image Wrapper (using <label> for full-area tap)
+      const motWrapper = document.createElement('label');
+      motWrapper.className = 'img-wrapper';
+
+      const motInput = document.createElement('input');
+      motInput.type = 'file';
+      motInput.accept = 'image/*';
+      motInput.addEventListener('change', () => handleImageUpload(motInput, motPreview));
+
+      const motPreview = document.createElement('img');
+      motPreview.className = 'mot-img-preview';
+      if (imgMot) {
+        motPreview.src = imgMot;
+        motPreview.classList.add('visible');
+      }
+      motPreview.setAttribute('data-src', imgMot);
+
+      motWrapper.appendChild(motInput);
+      motWrapper.appendChild(motPreview);
+      imgContainer.appendChild(motWrapper);
+
+      // • User Image Wrapper (using <label> for full-area tap)
+      const userWrapper = document.createElement('label');
+      userWrapper.className = 'img-wrapper';
+
+      const userInput = document.createElement('input');
+      userInput.type = 'file';
+      userInput.accept = 'image/*';
+      userInput.addEventListener('change', () => handleImageUpload(userInput, userPreview));
+
+      const userPreview = document.createElement('img');
+      userPreview.className = 'user-img-preview';
+      if (imgUser) {
+        userPreview.src = imgUser;
+        userPreview.classList.add('visible');
+      }
+      userPreview.setAttribute('data-src', imgUser);
+
+      userWrapper.appendChild(userInput);
+      userWrapper.appendChild(userPreview);
+      imgContainer.appendChild(userWrapper);
+
+      card.appendChild(imgContainer);
+
+      document.getElementById('quest-container').appendChild(card);
+      saveAllQuests();
+    }
+
+    function handleImageUpload(inputElem, previewElem) {
+      const file = inputElem.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = e => {
+        previewElem.src = e.target.result;
+        previewElem.setAttribute('data-src', e.target.result);
+        previewElem.classList.add('visible');
+        saveAllQuests();
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function removeQuestCard(cardElem) {
+      cardElem.classList.remove('animate__zoomIn');
+      cardElem.classList.add('animate__animated', 'animate__zoomOut');
+      cardElem.addEventListener('animationend', () => {
+        cardElem.remove();
+        saveAllQuests();
+      }, { once: true });
+    }
+
+    document.getElementById('add-quest-btn').addEventListener('click', () => {
+      createQuestCard();
+    });
+  </script>
+  <script src="audio.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Solo Leveling Mission System</title>
+
+  <!-- Animate.css for advanced animations -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+  />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    /* === GLOBAL & BACKGROUND === */
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      /* Dark radial gradient backdrop */
+      background: radial-gradient(circle at center, #0a0f27 0%, #03060f 100%);
+      overflow-x: hidden;
+      color: #e0e0e0;
+      scroll-behavior: smooth;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Neon grid overlay */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(transparent 95%, rgba(0, 150, 255, 0.1) 95%),
+        linear-gradient(90deg, transparent 95%, rgba(0, 150, 255, 0.1) 95%);
+      background-size: 50px 50px;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ---------- Hero Section ----------- */
+    .hero {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 1;
+    }
+
+    .hero h1 {
+      font-family: "Orbitron", sans-serif;
+      font-size: 4em;
+      color: #00ffff;
+      text-shadow: 0 0 12px rgba(0, 255, 255, 0.7),
+        0 0 20px rgba(0, 255, 255, 0.5);
+      margin: 0;
+    }
+
+    .scroll-down {
+      position: absolute;
+      bottom: 40px;
+      font-size: 1.2em;
+      color: #00ffff;
+      text-shadow: 0 0 8px rgba(0, 255, 255, 0.6);
+    }
+
+    .scroll-down::after {
+      content: "▼";
+      display: block;
+      font-size: 2em;
+    }
+
+    /* ---------- Quest Section ----------- */
+    .quest-section {
+      padding: 60px 20px;
+      text-align: center;
+      background: rgba(0, 0, 0, 0.7);
+      position: relative;
+      z-index: 1;
+    }
+
+    .quest-section h1 {
+      font-size: 2.8em;
+      color: #00ffff;
+      margin-bottom: 20px;
+      text-shadow: 0 0 10px rgba(0, 255, 255, 0.6);
+    }
+
+    .quest-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 24px;
+      margin-top: 20px;
+    }
+
+    .quest-card {
+      background-color: rgba(10, 10, 10, 0.9);
+      padding: 24px;
+      border-radius: 12px;
+      width: 300px;
+      text-align: center;
+      border: 2px solid #00aaaa;
+      box-shadow: 0 0 10px rgba(0, 170, 170, 0.4);
+      transition: transform 0.3s ease, box-shadow 0.3s ease,
+        border-color 0.3s ease;
+    }
+
+    .quest-card h2 {
+      color: #00ffff;
+      margin: 0 0 12px 0;
+      font-size: 1.5em;
+      text-shadow: 0 0 8px rgba(0, 255, 255, 0.5);
+    }
+
+    .quest-card p {
+      color: #b0f0f0;
+      font-size: 1em;
+      line-height: 1.4;
+      margin: 0;
+    }
+
+    .quest-link:hover .quest-card {
+      transform: translateY(-4px);
+      border-color: #00ffff;
+      box-shadow: 0 0 20px rgba(0, 255, 255, 0.8),
+        0 0 40px rgba(0, 255, 255, 0.5);
+    }
+
+    /* Ensures hero and quest sections don’t overlap */
+    .main-container {
+      position: relative;
+      z-index: 1;
+    }
+    #customAudioPlayer {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 9999;
+}
+
+#playPauseBtn {
+  background-color: #00ffff;
+  border: none;
+  padding: 10px 15px;
+  font-size: 1em;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
+}
+
+  </style>
+</head>
+
+<body>
+  <div class="main-container">
+    <!-- Hero Section -->
+    <div class="hero">
+      <h1 class="animate__animated animate__fadeInDown">WELCOME, PLAYER</h1>
+      <div class="scroll-down">Scroll Down</div>
+    </div>
+
+    <!-- Quest Cards Section -->
+    <section class="quest-section">
+      <h1 class="animate__animated animate__fadeIn">Your Missions</h1>
+      <div class="quest-container">
+        <!-- Yearly Quest -->
+        <a href="year.html" class="quest-link">
+          <div class="quest-card animate__animated animate__zoomIn">
+            <h2>Yearly Quest</h2>
+            <p>Define your ultimate goal for this year.</p>
+          </div>
+        </a>
+
+        <!-- Monthly Quest -->
+        <a href="month.html" class="quest-link">
+          <div
+            class="quest-card animate__animated animate__zoomIn animate__delay-1s"
+          >
+            <h2>Monthly Quest</h2>
+            <p>Set your challenges to conquer every month.</p>
+          </div>
+        </a>
+
+        <!-- Weekly Quest -->
+        <a href="week.html" class="quest-link">
+          <div
+            class="quest-card animate__animated animate__zoomIn animate__delay-2s"
+          >
+            <h2>Weekly Quest</h2>
+            <p>Outline your short-term victories each week.</p>
+          </div>
+        </a>
+
+        <!-- Daily Quest -->
+        <a href="day.html" class="quest-link">
+          <div
+            class="quest-card animate__animated animate__zoomIn animate__delay-3s"
+          >
+            <h2>Daily Quest</h2>
+            <p>Assign missions for consistent progress.</p>
+          </div>
+        </a>
+      </div>
+    </section>
+  </div>
+
+ <div id="audioContainer"></div>
+<script src="audio.js"></script>
+</body>
+</html>

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PowerBoost - Journal & Records</title>
+  <style>
+    :root {
+      --gold-shiny-1: #FFD700;
+      --gold-shiny-2: #FFC107;
+      --gold-shiny-3: #FFEB3B;
+      --text-color: #fff;
+    }
+
+    /* Shimmering, glossy golden background */
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(120deg, var(--gold-shiny-1), var(--gold-shiny-2), var(--gold-shiny-3), var(--gold-shiny-1));
+      background-size: 400% 400%;
+      animation: shine 10s ease infinite;
+      color: var(--text-color);
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    @keyframes shine {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Canvas overlay for flowing lightning */
+    #lightningCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 999;
+    }
+
+    header {
+      text-align: center;
+      padding: 20px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    }
+
+    header h1 {
+      font-size: 3rem;
+      margin: 0;
+    }
+
+    header p {
+      font-size: 1.2rem;
+      margin: 10px 0 0;
+    }
+
+    .blog-container {
+      max-width: 800px;
+      margin: 30px auto;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+    }
+
+    .post {
+      background: rgba(255, 255, 255, 0.1);
+      border-left: 4px solid var(--gold-shiny-1);
+      padding: 15px 20px;
+      margin-bottom: 20px;
+      border-radius: 4px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .post h2 {
+      margin-top: 0;
+      font-size: 1.8rem;
+      color: var(--gold-shiny-1);
+    }
+
+    .post .date {
+      font-size: 0.9rem;
+      color: #eee;
+      margin-bottom: 10px;
+    }
+
+    .post p {
+      line-height: 1.6;
+    }
+
+    .read-more {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 8px 16px;
+      border: 2px solid var(--gold-shiny-1);
+      color: var(--gold-shiny-1);
+      text-decoration: none;
+      font-weight: bold;
+      border-radius: 4px;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .read-more:hover {
+      background-color: var(--gold-shiny-1);
+      color: #000;
+    }
+  </style>
+</head>
+<body>
+  <!-- Canvas overlay for the continuously flowing lightning -->
+  <canvas id="lightningCanvas"></canvas>
+
+  <header>
+    <h1>PowerBoost - Journal & Records</h1>
+    <p>Electrify your journey: documenting challenges, missions, and breakthroughs</p>
+  </header>
+
+  <div class="blog-container">
+    <article class="post">
+      <h2>Journal Entry: The Awakening</h2>
+      <div class="date">June 1, 2025</div>
+      <p>
+        Today marks the beginning of a new era. I took on the mission to refine my inner power and break my own limits. The training was intense, filled with moments of struggle and epiphanies. Every challenge pushed me further, electrifying my resolve and bringing me closer to that legendary state.
+      </p>
+      <a href="#" class="read-more">Read More</a>
+    </article>
+
+    <article class="post">
+      <h2>Mission Report: The Power Surge</h2>
+      <div class="date">May 27, 2025</div>
+      <p>
+        During today's challenge, I experienced an unprecedented surge of energy. It was as if my body and spirit were synced with the universe. The mission required breaking through physical and mental barriers, resulting in a level of power that felt almost otherworldly.
+      </p>
+      <a href="#" class="read-more">Read More</a>
+    </article>
+
+    <article class="post">
+      <h2>Chronicles of Conquest: New Challenges Emerge</h2>
+      <div class="date">May 20, 2025</div>
+      <p>
+        The journey continues with unexpected missions arising from uncharted territories. Each record is a testament to the battles fought and the victories, no matter how small. The notes in this journal serve as a reminder and motivation for what lies ahead.
+      </p>
+      <a href="#" class="read-more">Read More</a>
+    </article>
+  </div>
+
+  <script>
+    // Set up the canvas for the continuous, rectangular lightning animation.
+    const canvas = document.getElementById("lightningCanvas");
+    const ctx = canvas.getContext("2d");
+    let startTime = performance.now();
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.addEventListener("resize", resizeCanvas);
+
+    // Given t in [0,1], return a point on the perimeter (clockwise starting at top-left)
+    function getPointOnPerimeter(t) {
+      let w = canvas.width, h = canvas.height;
+      let perimeter = 2 * (w + h);
+      let d = t * perimeter;
+
+      if (d < w) {
+        return { x: d, y: 0 };
+      } else if (d < w + h) {
+        return { x: w, y: d - w };
+      } else if (d < 2 * w + h) {
+        return { x: w - (d - (w + h)), y: h };
+      } else {
+        return { x: 0, y: h - (d - (2 * w + h)) };
+      }
+    }
+
+    // Draw a lightning bolt along the perimeter segment starting at a given parameter.
+    function drawLightningBolt(startParam) {
+      // boltLength as a fraction of the total perimeter (e.g., 15%)
+      let boltLength = 0.15;
+      let n = 30; // Number of sample points
+      let points = [];
+
+      for (let i = 0; i <= n; i++) {
+        // Calculate the normalized parameter along the perimeter; uses modulo to wrap around.
+        let t = (startParam + (i / n) * boltLength) % 1;
+        let basePoint = getPointOnPerimeter(t);
+
+        // Compute a tangent for a smoother lightning effect.
+        let tangent;
+        if (i === 0) {
+          let nextPoint = getPointOnPerimeter((startParam + ((i + 1) / n) * boltLength) % 1);
+          tangent = { x: nextPoint.x - basePoint.x, y: nextPoint.y - basePoint.y };
+        } else if (i === n) {
+          let prevPoint = getPointOnPerimeter((startParam + ((i - 1) / n) * boltLength) % 1);
+          tangent = { x: basePoint.x - prevPoint.x, y: basePoint.y - prevPoint.y };
+        } else {
+          let prevPoint = getPointOnPerimeter((startParam + ((i - 1) / n) * boltLength) % 1);
+          let nextPoint = getPointOnPerimeter((startParam + ((i + 1) / n) * boltLength) % 1);
+          tangent = { x: nextPoint.x - prevPoint.x, y: nextPoint.y - prevPoint.y };
+        }
+        let mag = Math.sqrt(tangent.x * tangent.x + tangent.y * tangent.y) || 1;
+        // Normal vector perpendicular to the tangent.
+        let normal = { x: -tangent.y / mag, y: tangent.x / mag };
+
+        // Use a sine function to add smooth, continuous variation along the bolt.
+        let timeFactor = (performance.now() - startTime) / 500;
+        let amplitude = 20; // Amplitude for the deviation (controls "branching" effect)
+        let offsetAmount = amplitude * Math.sin(2 * Math.PI * (timeFactor + i / n));
+
+        let offsetX = normal.x * offsetAmount;
+        let offsetY = normal.y * offsetAmount;
+        points.push({ x: basePoint.x + offsetX, y: basePoint.y + offsetY });
+      }
+
+      // Draw the resulting lightning bolt.
+      ctx.beginPath();
+      ctx.moveTo(points[0].x, points[0].y);
+      for (let i = 1; i < points.length; i++) {
+        ctx.lineTo(points[i].x, points[i].y);
+      }
+      ctx.strokeStyle = "rgba(0,191,255,1)";
+      ctx.lineWidth = 10; // Increased width for extra weight
+      ctx.shadowBlur = 20;
+      ctx.shadowColor = "rgba(0,191,255,1)";
+      ctx.stroke();
+      ctx.closePath();
+    }
+
+    // Animate the lightning bolt to continuously flow along the rectangular border.
+    function animateLightning() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      // Cycle through the perimeter. Adjust cycleTime (in ms) for speed.
+      let cycleTime = 8000; 
+      let currentTime = performance.now() - startTime;
+      let offsetParam = (currentTime / cycleTime) % 1;
+      drawLightningBolt(offsetParam);
+      requestAnimationFrame(animateLightning);
+    }
+    animateLightning();
+  </script>
+</body>
+</html>

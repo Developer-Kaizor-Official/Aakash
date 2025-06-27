@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Projects Timeline</title>
+  <style>
+    :root {
+      --blue-neon: #00e7ff;
+      --blue-neon-fade: rgba(0, 231, 255, 0.20);
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at 50% 0%, #0d1a2a 0%, #04070e 60%, #000 100%);
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      color: #e0f7ff;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+    /* ---- Header Styles ---- */
+    header {
+      text-align: center;
+      padding: 4rem 1rem 2rem;
+    }
+    header h1 {
+      font-size: clamp(2.5rem, 5vw+1rem, 4rem);
+      letter-spacing: 1.5px;
+      color: var(--blue-neon);
+      text-shadow:
+        0 0 4px var(--blue-neon),
+        0 0 8px var(--blue-neon),
+        0 0 16px var(--blue-neon);
+      animation: flicker 3s infinite;
+    }
+    @keyframes flicker {
+      0%, 97%, 100% { opacity: 1; }
+      3%, 5%, 12%, 15%, 40%, 80% { opacity: 0.87; }
+      6%, 9%, 30%, 60% { opacity: 0.60; }
+    }
+    /* ---- Timeline Container ---- */
+    .timeline-container {
+      position: relative;
+      width: 90%;
+      margin: auto;
+      padding: 2rem 0;
+    }
+    /* Vertical center line */
+    .timeline-container::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 0;
+      transform: translateX(-50%);
+      width: 4px;
+      height: 100%;
+      background: var(--blue-neon);
+      box-shadow: 0 0 10px var(--blue-neon), 0 0 20px var(--blue-neon);
+    }
+    /* ---- Timeline Items ---- */
+    .timeline-item {
+      position: relative;
+      width: 50%;
+      padding: 1rem 2rem;
+    }
+    /* Left items (appearing on the left side of the line) */
+    .timeline-item.left {
+      left: 0;
+      text-align: right;
+    }
+    /* Right items (appearing on the right side of the line) */
+    .timeline-item.right {
+      left: 50%;
+      text-align: left;
+    }
+    /* The content box for each timeline event */
+    .timeline-content {
+      background: rgba(5, 10, 20, 0.85);
+      padding: 1.5rem;
+      border: 2px solid var(--blue-neon);
+      border-radius: 8px;
+      box-shadow: 0 0 10px var(--blue-neon-fade), inset 0 0 8px var(--blue-neon);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .timeline-content:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 0 18px var(--blue-neon), inset 0 0 14px var(--blue-neon);
+    }
+    /* Date stamps above the items */
+    .timeline-date {
+      font-size: 0.8rem;
+      margin-bottom: 0.5rem;
+      color: #a0cfe6;
+    }
+    /* Round marker on the timeline */
+    .timeline-item::before {
+      content: "";
+      position: absolute;
+      top: calc(50% - 8px);
+      width: 16px;
+      height: 16px;
+      background: var(--blue-neon);
+      border: 4px solid #000;
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--blue-neon), 0 0 20px var(--blue-neon);
+    }
+    .timeline-item.left::before {
+      right: -8px;
+    }
+    .timeline-item.right::before {
+      left: -8px;
+    }
+    /* ---- Footer ---- */
+    footer {
+      text-align: center;
+      font-size: 0.75rem;
+      color: #5c7b8f;
+      padding: 2rem 1rem;
+    }
+    /* ---- Responsive Adjustments ---- */
+    @media screen and (max-width: 768px) {
+      .timeline-item {
+        width: 100%;
+        padding-left: 2.5rem;
+        padding-right: 2.5rem;
+        margin-bottom: 2rem;
+        text-align: left;
+      }
+      .timeline-item::before {
+        left: -8px;
+      }
+      .timeline-container::after {
+        left: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- ===== Header ===== -->
+  <header>
+    <h1>Projects Timeline</h1>
+  </header>
+
+  <!-- ===== Timeline Section ===== -->
+  <div class="timeline-container">
+    <!-- Timeline Item 1 -->
+    <div class="timeline-item left">
+      <div class="timeline-content">
+        <div class="timeline-date">January 2023</div>
+        <h2>Project Genesis</h2>
+        <p>This was my first breakthrough project—laying down the foundation for merging experimental designs with digital art techniques. The neon concept was born here.</p>
+      </div>
+    </div>
+
+    <!-- Timeline Item 2 -->
+    <div class="timeline-item right">
+      <div class="timeline-content">
+        <div class="timeline-date">April 2023</div>
+        <h2>Neon Dreams</h2>
+        <p>An interactive portfolio infused with cyberpunk aesthetics. Here, luminous visuals and responsive design came together to create a vibrant user experience.</p>
+      </div>
+    </div>
+
+    <!-- Timeline Item 3 -->
+    <div class="timeline-item left">
+      <div class="timeline-content">
+        <div class="timeline-date">August 2023</div>
+        <h2>Shadow Canvas</h2>
+        <p>A digital gallery that played with the balance of darkness and neon light. Each project displayed here was a step towards a futuristic visual narrative.</p>
+      </div>
+    </div>
+
+    <!-- Timeline Item 4 -->
+    <div class="timeline-item right">
+      <div class="timeline-content">
+        <div class="timeline-date">December 2023</div>
+        <h2>Digital Ascension</h2>
+        <p>An overhaul of classic layouts with modern neon-inspired design. This project encapsulated how traditional ideas can be reimagined with contemporary digital art.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Footer ===== -->
+  <footer>
+    © 2025 Aakash — Projects Timeline<br />
+    All trademarks remain with their respective owners.
+  </footer>
+
+  <script>
+    // Optional: Add a subtle scroll reveal effect to timeline items.
+    window.addEventListener('DOMContentLoaded', () => {
+      const timelineItems = document.querySelectorAll('.timeline-item');
+      
+      // Set initial hidden state
+      timelineItems.forEach(item => {
+        const content = item.querySelector('.timeline-content');
+        content.style.opacity = 0;
+        content.style.transform = 'translateY(20px)';
+      });
+      
+      const revealOnScroll = () => {
+        timelineItems.forEach(item => {
+          const content = item.querySelector('.timeline-content');
+          const rect = item.getBoundingClientRect();
+          if (rect.top < window.innerHeight - 100) {
+            content.style.opacity = 1;
+            content.style.transform = 'translateY(0)';
+          }
+        });
+      };
+      
+      window.addEventListener('scroll', revealOnScroll);
+      revealOnScroll();
+    });
+  </script>
+</body>
+</html>

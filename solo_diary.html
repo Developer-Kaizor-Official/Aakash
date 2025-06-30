@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Solo Leveling Diary</title>
+    <style>
+        /*==== Base & Background ====*/
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background:
+                /* subtle lightning texture vibe via gradient overlay */
+                linear-gradient(135deg, rgba(0, 0, 0, 0.6), rgba(16, 0, 32, 0.8)),
+                #0a0010;
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px #000;
+        }
+
+        /*==== Cards Grid ====*/
+        .cards {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .card {
+            background: #00103d;
+            border: 4px solid #550055;
+            border-radius: 8px;
+            flex: 1 1 300px;
+            max-width: 45%;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+        }
+
+        .card-header {
+            background: #00bfff;
+            padding: 12px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: #000;
+            text-shadow: 1px 1px 2px #fff;
+            border-bottom: 2px solid #550055;
+        }
+
+        .card-body {
+            padding: 16px;
+            flex-grow: 1;
+            line-height: 1.5;
+        }
+
+        /*==== Add‑Day Button ====*/
+        .add-btn {
+            display: block;
+            margin: 30px auto 0;
+            padding: 12px 24px;
+            background: #550055;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            box-shadow: 0 0 10px rgba(85, 0, 85, 0.7);
+            color: #fff;
+        }
+
+        .add-btn:hover {
+            background: #770077;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>My Solo Leveling Diary</h1>
+        <div class="cards" id="cards">
+            <!-- Example cards -->
+            <div class="card">
+                <div class="card-header">DAY‑1</div>
+                <div class="card-body">
+                   Lorem ipsum dolor sit, amet consectetur adipisicing elit. Vitae, similique nostrum. Omnis suscipit alias, deleniti quidem nihil quod dicta, velit soluta quibusdam modi inventore eligendi doloremque itaque error harum fugiat. Sunt consectetur molestiae laudantium necessitatibus ab deserunt minima corrupti debitis, atque suscipit vero? Odio hic, optio rerum, obcaecati ratione alias eius sapiente asperiores deleniti impedit tenetur expedita? Ad molestias, nihil, tempora voluptate quidem nam suscipit provident nostrum quos a velit minus, sapiente impedit mollitia asperiores. Vero quibusdam, voluptate doloremque molestias et, amet at, voluptatibus velit culpa explicabo quisquam consequatur? Placeat error eos officia unde enim officiis, nesciunt sequi doloribus dolores. Debitis beatae omnis ipsa voluptatem, dicta ratione deserunt ea quos illum laborum voluptatum quo? Minima hic dolorum aspernatur eaque dignissimos placeat fugit non aut nesciunt voluptates. Accusamus nihil neque ullam blanditiis optio iure, quae illum praesentium repellat accusantium. Et placeat nemo eum assumenda iusto labore?
+                </div>
+
+                <div class="card-header">DAY‑2</div>
+                <div class="card-body">
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perferendis magni animi aliquid cumque possimus fugiat sequi enim qui odit iste odio dolorum similique, fugit labore minus aspernatur vero nobis ea, porro pariatur, quaerat doloremque! In libero esse quos deserunt inventore obcaecati similique. Harum itaque neque quia eveniet voluptate, deleniti, unde molestias ut sint, aut illum repellendus ea et necessitatibus. Adipisci doloribus ipsam incidunt placeat, sit eos expedita reprehenderit fugiat inventore rerum odit ut optio natus, fugit ducimus doloremque, dicta nisi numquam aliquid. Laudantium itaque ab facilis enim fugit, aliquid, sunt ex accusantium, ipsa dolore laboriosam assumenda labore cum! Reiciendis, fugit vero eos rerum hic soluta molestias accusamus enim odit ea mollitia officia animi labore ipsa itaque obcaecati est vitae tempore! Consequatur neque quaerat quibusdam aliquid. Dignissimos totam optio id porro ea magni! Voluptates reiciendis asperiores quaerat, quis laborum aspernatur laboriosam nulla excepturi dignissimos delectus a?
+                </div>
+                
+            </div>
+            <div class="card">
+                <div class="card-header">DAY‑2</div>
+                <div class="card-body">
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perferendis magni animi aliquid cumque possimus fugiat sequi enim qui odit iste odio dolorum similique, fugit labore minus aspernatur vero nobis ea, porro pariatur, quaerat doloremque! In libero esse quos deserunt inventore obcaecati similique. Harum itaque neque quia eveniet voluptate, deleniti, unde molestias ut sint, aut illum repellendus ea et necessitatibus. Adipisci doloribus ipsam incidunt placeat, sit eos expedita reprehenderit fugiat inventore rerum odit ut optio natus, fugit ducimus doloremque, dicta nisi numquam aliquid. Laudantium itaque ab facilis enim fugit, aliquid, sunt ex accusantium, ipsa dolore laboriosam assumenda labore cum! Reiciendis, fugit vero eos rerum hic soluta molestias accusamus enim odit ea mollitia officia animi labore ipsa itaque obcaecati est vitae tempore! Consequatur neque quaerat quibusdam aliquid. Dignissimos totam optio id porro ea magni! Voluptates reiciendis asperiores quaerat, quis laborum aspernatur laboriosam nulla excepturi dignissimos delectus a?
+                </div>
+
+                <div class="card-header">DAY‑2</div>
+                <div class="card-body">
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perferendis magni animi aliquid cumque possimus fugiat sequi enim qui odit iste odio dolorum similique, fugit labore minus aspernatur vero nobis ea, porro pariatur, quaerat doloremque! In libero esse quos deserunt inventore obcaecati similique. Harum itaque neque quia eveniet voluptate, deleniti, unde molestias ut sint, aut illum repellendus ea et necessitatibus. Adipisci doloribus ipsam incidunt placeat, sit eos expedita reprehenderit fugiat inventore rerum odit ut optio natus, fugit ducimus doloremque, dicta nisi numquam aliquid. Laudantium itaque ab facilis enim fugit, aliquid, sunt ex accusantium, ipsa dolore laboriosam assumenda labore cum! Reiciendis, fugit vero eos rerum hic soluta molestias accusamus enim odit ea mollitia officia animi labore ipsa itaque obcaecati est vitae tempore! Consequatur neque quaerat quibusdam aliquid. Dignissimos totam optio id porro ea magni! Voluptates reiciendis asperiores quaerat, quis laborum aspernatur laboriosam nulla excepturi dignissimos delectus a?
+                </div>
+
+            </div>
+        </div>
+
+        <script>
+            // Simple JS hook to append more Day‑cards
+            let dayCount = 2;
+            function addCard() {
+                dayCount++;
+                const cards = document.getElementById('cards');
+                const card = document.createElement('div');
+                card.className = 'card';
+
+                const header = document.createElement('div');
+                header.className = 'card-header';
+                header.textContent = `DAY‑${dayCount}`;
+
+                const body = document.createElement('div');
+                body.className = 'card-body';
+                body.textContent = 'Your diary entry for this day…';
+
+                card.appendChild(header);
+                card.appendChild(body);
+                cards.appendChild(card);
+            }
+        </script>
+</body>
+
+</html>
